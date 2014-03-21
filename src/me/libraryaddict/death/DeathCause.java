@@ -18,6 +18,7 @@ public abstract class DeathCause {
     public static DeathCause CACTUS = new DeathCauseCactus();
     public static DeathCause CREEPER_EXPLOSION = new DeathCauseCreeperExplosion();
     public static DeathCause DROWN = new DeathCauseDrown();
+    public static DeathCause ENDERPEARL = new DeathCauseEnderpearl();
     public static DeathCause SHOT_FALL = new DeathCauseBase();
     public static DeathCause SHOT_VOID = new DeathCauseBase();
     public static DeathCause EXPLODED = new DeathCauseExplosion();
@@ -44,6 +45,7 @@ public abstract class DeathCause {
         CACTUS.registerDeathMessage("%Killed% was pricked to death");
         CREEPER_EXPLOSION.registerDeathMessage("%Killed% was blown up by %Killer%");
         DROWN.registerDeathMessage("%Killed% forgot to swim");
+        ENDERPEARL.registerDeathMessage("%Killed% took too much damage using enderpearls");
         EXPLODED.registerDeathMessage("%Killed% got a mouthful of explosions");
         FALL.registerDeathMessage("%Killed% fell to their death");
         FIGHT.registerDeathMessage("%Killed% was slain by %Killer%");
@@ -67,6 +69,7 @@ public abstract class DeathCause {
         deathCauses.add(DeathCause.CACTUS);
         deathCauses.add(DeathCause.CREEPER_EXPLOSION);
         deathCauses.add(DeathCause.DROWN);
+        deathCauses.add(DeathCause.ENDERPEARL);
         deathCauses.add(DeathCause.EXPLODED);
         deathCauses.add(DeathCause.FALL);
         deathCauses.add(DeathCause.FIGHT_PLAYER);
