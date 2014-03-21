@@ -1,36 +1,35 @@
 package me.libraryaddict.death.causes;
 
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-
+import org.bukkit.event.entity.EntityDamageEvent;
 import me.libraryaddict.death.DeathCause;
 
 public class Shot extends DeathCause {
 
     @Override
-    public boolean isCauseOfDeath(LivingEntity entity) {
-        if (entity.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent event = (EntityDamageByEntityEvent) entity.getLastDamageCause();
-            if (event.getDamager() instanceof Shot && event.getDamage() > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public String getDeathMessage(LivingEntity entity) {
+    public String getDeathMessage(LivingEntity entity, Object damager) {
         return getMessage().replace("%Killed%", getName(entity));
     }
 
     @Override
-    public Object getKiller(LivingEntity entity) {
-        org.bukkit.entity.Projectile projectile = (org.bukkit.entity.Projectile) ((EntityDamageByEntityEvent) entity
-                .getLastDamageCause()).getDamager();
+    public Object getKiller(EntityDamageEvent event) {
+        org.bukkit.entity.Projectile projectile = (org.bukkit.entity.Projectile) ((EntityDamageByEntityEvent) event).getDamager();
         if (projectile.getShooter() != null) {
             return projectile.getShooter();
         }
         return null;
+    }
+
+    @Override
+    public boolean isCauseOfDeath(EntityDamageEvent event) {
+        if (event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent eventDamage = (EntityDamageByEntityEvent) event;
+            if (eventDamage.getDamager() instanceof Projectile && event.getDamage() > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

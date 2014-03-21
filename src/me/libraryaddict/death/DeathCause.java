@@ -11,6 +11,7 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public abstract class DeathCause {
     public static DeathCause ANVIL = new Anvil();
@@ -34,11 +35,11 @@ public abstract class DeathCause {
     private static ArrayList<DeathCause> deathCauses = new ArrayList<DeathCause>();
     private ArrayList<String> deathMessages = new ArrayList<String>();
     static {
-        ANVIL.registerDeathMessage("%Killed% squashed");
+        ANVIL.registerDeathMessage("%Killed% was squashed by a anvil");
         CACTUS.registerDeathMessage("%Killed% was pricked to death");
         CREEPER_EXPLOSION.registerDeathMessage("%Killed% was blown up by %Killer%");
         DROWN.registerDeathMessage("%Killed% forgot to swim");
-        EXPLODED.registerDeathMessage("%Killed% exploded");
+        EXPLODED.registerDeathMessage("%Killed% got a mouthful of explosions");
         FALL.registerDeathMessage("%Killed% fell to their death");
         FIGHT.registerDeathMessage("%Killed% was slain by %Killer%");
         FIRE.registerDeathMessage("%Killed% burned to death");
@@ -82,7 +83,7 @@ public abstract class DeathCause {
             return DeathCause.UNKNOWN;
         }
         for (DeathCause cause : deathCauses) {
-            if (cause.isCauseOfDeath(entity)) {
+            if (cause.isCauseOfDeath(entity.getLastDamageCause())) {
                 return cause;
             }
         }
@@ -130,9 +131,10 @@ public abstract class DeathCause {
         return obj.toString();
     }
 
-    public abstract String getDeathMessage(LivingEntity entity);
+    public abstract String getDeathMessage(LivingEntity entity, Object damager);
 
-    public abstract Object getKiller(LivingEntity entity);
+    public abstract Object getKiller(EntityDamageEvent event);
 
-    public abstract boolean isCauseOfDeath(LivingEntity entity);
+    public abstract boolean isCauseOfDeath(EntityDamageEvent event);
+
 }
