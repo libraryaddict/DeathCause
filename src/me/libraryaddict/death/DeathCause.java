@@ -54,10 +54,10 @@ public abstract class DeathCause {
         LAVA.registerDeathMessage("%Killed% was cooked in lava");
         LIGHTNING.registerDeathMessage("%Killed% was shocked by lightning");
         POTION.registerDeathMessage("%Killed% took %Killer%'s potion to the face");
-        PUSHED_FALL.registerDeathMessage("%Killed% was pushed to their death by %Killer%");
-        PUSHED_VOID.registerDeathMessage("%Killed% was pushed into the void by %Killer%");
+        PUSHED_FALL.registerDeathMessage("%Killed% was doomed to fall by %Killer%");
+        PUSHED_VOID.registerDeathMessage("%Killed% was knocked into the void by %Killer%");
         SHOT.registerDeathMessage("%Killed% was shot by %Killer%");
-        SHOT_FALL.registerDeathMessage("%Killed% was shot off their perch by %Killer%");
+        SHOT_FALL.registerDeathMessage("%Killed% was shot off their ledge by %Killer%");
         SHOT_VOID.registerDeathMessage("%Killed% was shot into the void by %Killer%");
         STARVE.registerDeathMessage("%Killed% starved to death (somehow)");
         SUFFOCATION.registerDeathMessage("%Killed% suffocated to death");
