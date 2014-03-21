@@ -43,6 +43,9 @@ public class DeathHandlerListener implements Listener {
                 hp -= dmg.getDamage();
             }
         }
+        if (pushed.containsKey(p) && !damageCauses.containsKey(pushed.get(p))) {
+            pushed.remove(p);
+        }
     }
 
     public HashMap<Player, ArrayList<Damage>> getDamages() {
@@ -115,16 +118,19 @@ public class DeathHandlerListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         damageCauses.remove(event.getPlayer());
+        pushed.remove(event.getPlayer());
     }
 
     @EventHandler
     public void onRespawn(PlayerDeathEvent event) {
         damageCauses.remove(event.getEntity());
+        pushed.remove(event.getEntity());
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         damageCauses.remove(event.getPlayer());
+        pushed.remove(event.getPlayer());
     }
 
 }

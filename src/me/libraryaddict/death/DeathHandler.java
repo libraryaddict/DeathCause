@@ -116,7 +116,7 @@ public class DeathHandler {
     }
 
     /**
-     * Just a method that instilizes static stuff
+     * Just a method that initializes static stuff
      */
     public static void initialize() {
     }
