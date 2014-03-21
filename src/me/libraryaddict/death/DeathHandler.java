@@ -25,6 +25,7 @@ public class DeathHandler {
             }
         });
     }
+
     /**
      * Just a method that instilizes static stuff
      */
@@ -53,6 +54,20 @@ public class DeathHandler {
             }
         }
         return damage;
+    }
+
+    public static DeathCause getDeathCause(Player entity) {
+        if (listener.getDamages().containsKey(entity)) {
+            return listener.getDamages().get(entity).get(0).getCause();
+        }
+        return DeathCause.UNKNOWN;
+    }
+
+    public static Damage getLastDamage(Player player) {
+        if (listener.getDamages().containsKey(player)) {
+            return listener.getDamages().get(player).get(0);
+        }
+        return new Damage(DeathCause.UNKNOWN, 0, null);
     }
 
     public static Player getKiller(Player player) {
