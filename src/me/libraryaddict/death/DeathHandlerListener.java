@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import me.libraryaddict.damageapi.DamageApi;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -13,7 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class DeathHandlerListener implements Listener {
     private HashMap<Player, ArrayList<Damage>> damageCauses = new HashMap<Player, ArrayList<Damage>>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player && !event.isCancelled()) {
             DeathCause cause = DeathCause.getDeathCause(event);
@@ -32,7 +35,9 @@ public class DeathHandlerListener implements Listener {
                 } else {
                     damageCauses.put((Player) event.getEntity(), new ArrayList<Damage>());
                 }
-                damageCauses.get(event.getEntity()).add(0, new Damage(cause, event.getDamage(), cause.getKiller(event)));
+                double damage = DamageApi
+                        .calculateDamageAddArmor((Player) event.getEntity(), event.getCause(), event.getDamage());
+                damageCauses.get(event.getEntity()).add(0, new Damage(cause, damage, cause.getKiller(event)));
             }
         }
     }
