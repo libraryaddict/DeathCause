@@ -43,7 +43,7 @@ public class DeathHandlerListener implements Listener {
                 hp -= dmg.getDamage();
             }
         }
-        if (pushed.containsKey(p) && !damageCauses.containsKey(pushed.get(p))) {
+        if (pushed.containsKey(p) && !damageCauses.get(p).contains(pushed.get(p))) {
             pushed.remove(p);
         }
     }
@@ -109,7 +109,7 @@ public class DeathHandlerListener implements Listener {
     public void onMove(PlayerMoveEvent event) {
         if (pushed.containsKey(event.getPlayer())) {
             if (event.getPlayer().getFallDistance() == 0 && event.getPlayer().isOnGround()
-                    && DeathHandler.getLastDamage(event.getPlayer()).getWhen() + 200 < System.currentTimeMillis()) {
+                    && DeathHandler.getLastDamage(event.getPlayer()).getWhen() + 500 < System.currentTimeMillis()) {
                 pushed.remove(event.getPlayer());
             }
         }

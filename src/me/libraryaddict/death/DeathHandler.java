@@ -83,9 +83,9 @@ public class DeathHandler {
         return damage;
     }
 
-    public static DeathCause getDeathCause(Player entity) {
-        if (listener.getDamages().containsKey(entity)) {
-            return listener.getDamages().get(entity).get(0).getCause();
+    public static DeathCause getDeathCause(Player player) {
+        if (listener.getDamages().containsKey(player)) {
+            return listener.getDamages().get(player).get(0).getCause();
         }
         return DeathCause.UNKNOWN;
     }
