@@ -82,12 +82,16 @@ public abstract class DeathCause {
             System.out.println("[DeathCause] Cannot find the death cause for " + entity + " as there is no damage event");
             return DeathCause.UNKNOWN;
         }
+        return getDeathCause(entity.getLastDamageCause());
+    }
+
+    public static DeathCause getDeathCause(EntityDamageEvent event) {
         for (DeathCause cause : deathCauses) {
-            if (cause.isCauseOfDeath(entity.getLastDamageCause())) {
+            if (cause.isCauseOfDeath(event)) {
                 return cause;
             }
         }
-        System.out.println("[DeathCause] Cannot find the death cause for " + entity);
+        System.out.println("[DeathCause] Cannot find the death cause for " + event.getEntity());
         return DeathCause.UNKNOWN;
     }
 
