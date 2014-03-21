@@ -18,6 +18,8 @@ public abstract class DeathCause {
     public static DeathCause CACTUS = new DeathCauseCactus();
     public static DeathCause CREEPER_EXPLOSION = new DeathCauseCreeperExplosion();
     public static DeathCause DROWN = new DeathCauseDrown();
+    public static DeathCause SHOT_FALL = new DeathCauseBase();
+    public static DeathCause SHOT_VOID = new DeathCauseBase();
     public static DeathCause EXPLODED = new DeathCauseExplosion();
     public static DeathCause FALL = new DeathCauseFall();
     public static DeathCause FIGHT = new DeathCauseFight();
@@ -28,7 +30,8 @@ public abstract class DeathCause {
     public static DeathCause POTION = new DeathCausePotion();
     public static DeathCause SHOT = new DeathCauseShot();
     public static DeathCause STARVE = new DeathCauseStarve();
-    public static DeathCause PUSHED_FALL = new DeathCausePushedFall();
+    public static DeathCause PUSHED_FALL = new DeathCauseBase();
+    public static DeathCause PUSHED_VOID = new DeathCauseBase();
     public static DeathCause SUFFOCATION = new DeathCauseSuffocation();
     public static DeathCause SUICIDE = new DeathCauseSuicide();
     public static DeathCause UNKNOWN = new DeathCauseUnknown();
@@ -49,11 +52,14 @@ public abstract class DeathCause {
         LAVA.registerDeathMessage("%Killed% was cooked in lava");
         LIGHTNING.registerDeathMessage("%Killed% was shocked by lightning");
         POTION.registerDeathMessage("%Killed% took %Killer%'s potion to the face");
-        PUSHED_FALL.registerDeathMessage("%Killed% was pushed off a cliff by %Killer%");
+        PUSHED_FALL.registerDeathMessage("%Killed% was pushed to their death by %Killer%");
+        PUSHED_VOID.registerDeathMessage("%Killed% was pushed into the void by %Killer%");
         SHOT.registerDeathMessage("%Killed% was shot by %Killer%");
+        SHOT_FALL.registerDeathMessage("%Killed% was shot off their perch by %Killer%");
+        SHOT_VOID.registerDeathMessage("%Killed% was shot into the void by %Killer%");
         STARVE.registerDeathMessage("%Killed% starved to death (somehow)");
         SUFFOCATION.registerDeathMessage("%Killed% suffocated to death");
-        SUICIDE.registerDeathMessage("%Killed% pressed the suicide button despite pleas from friends and family");
+        SUICIDE.registerDeathMessage("%Killed% pressed the suicide button");
         VOID.registerDeathMessage("%Killed% fell into the void");
         WITHER.registerDeathMessage("%Killed% sucked on a vial of wither poison");
         UNKNOWN.registerDeathMessage("%Killed% died by unknown means");
@@ -133,7 +139,7 @@ public abstract class DeathCause {
             }
             String[] names = entity.getType().name().split("_");
             for (int i = 0; i < names.length; i++) {
-                names[i] = names[i].substring(0, 1) + names[i].substring(1);
+                names[i] = names[i].substring(0, 1) + names[i].substring(1).toLowerCase();
             }
             return StringUtils.join(names, " ");
         } else if (obj instanceof Dispenser) {

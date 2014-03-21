@@ -21,11 +21,6 @@ public class DeathHandlerListener implements Listener {
     private HashMap<Player, ArrayList<Damage>> damageCauses = new HashMap<Player, ArrayList<Damage>>();
     private HashMap<Player, Damage> pushed = new HashMap<Player, Damage>();
 
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent event) {
-        damageCauses.remove(event.getPlayer());
-    }
-
     public void checkDamages() {
         Iterator<Player> pItel = damageCauses.keySet().iterator();
         while (pItel.hasNext()) {
@@ -50,18 +45,8 @@ public class DeathHandlerListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onRespawn(PlayerDeathEvent event) {
-        damageCauses.remove(event.getEntity());
-    }
-
-    @EventHandler
-    public void onMove(PlayerMoveEvent event) {
-        if (pushed.containsKey(event.getPlayer())) {
-            if (event.getPlayer().getFallDistance() == 0) {
-                pushed.remove(event.getPlayer());
-            }
-        }
+    public HashMap<Player, ArrayList<Damage>> getDamages() {
+        return damageCauses;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -79,28 +64,66 @@ public class DeathHandlerListener implements Listener {
                 Damage newDamage = new Damage(cause, damage, cause.getKiller(event));
                 damageCauses.get(p).add(0, newDamage);
                 if (pushed.containsKey(p)) {
-                    if (newDamage.getCause() == DeathCause.FALL) {
-                        newDamage.setCause(DeathCause.PUSHED_FALL);
-                        newDamage.setDamager(pushed.remove(p).getDamager());
+                    if (newDamage.getCause() == DeathCause.FALL || newDamage.getCause() == DeathCause.VOID) {
+                        Damage oldCause = pushed.remove(p);
+                        if (oldCause.getCause() instanceof DeathCauseFight) {
+                            if (newDamage.getCause() == DeathCause.FALL) {
+                                newDamage.setCause(DeathCause.PUSHED_FALL);
+                            } else {
+                                newDamage.setCause(DeathCause.PUSHED_VOID);
+                            }
+                        } else {
+                            if (newDamage.getCause() == DeathCause.FALL) {
+                                newDamage.setCause(DeathCause.SHOT_FALL);
+                            } else {
+                                newDamage.setCause(DeathCause.SHOT_VOID);
+                            }
+                        }
+                        newDamage.setDamager(oldCause.getDamager());
                     } else if (p.getFallDistance() == 0) {
                         pushed.remove(p);
                     }
                 }
-                if (!p.getAllowFlight() && p.getFallDistance() == 0) {
+                if (!p.getAllowFlight() && (!pushed.containsKey(p) || p.getFallDistance() == 0)) {
                     if (newDamage.getCause() instanceof DeathCauseFight || newDamage.getCause() == DeathCause.SHOT) {
                         pushed.put(p, newDamage);
+                    }
+                }
+                if (newDamage.getCause() == DeathCause.VOID) {
+                    if (damageCauses.get(p).size() > 1) {
+                        Damage dmg = damageCauses.get(p).get(1);
+                        if (dmg.getCause() == DeathCause.PUSHED_VOID || dmg.getCause() == DeathCause.SHOT_VOID) {
+                            newDamage.setCause(dmg.getCause());
+                            newDamage.setDamager(dmg.getDamager());
+                        }
                     }
                 }
             }
         }
     }
 
-    public HashMap<Player, ArrayList<Damage>> getDamages() {
-        return damageCauses;
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        if (pushed.containsKey(event.getPlayer())) {
+            if (event.getPlayer().getFallDistance() == 0 && event.getPlayer().isOnGround()
+                    && DeathHandler.getLastDamage(event.getPlayer()).getWhen() + 200 < System.currentTimeMillis()) {
+                pushed.remove(event.getPlayer());
+            }
+        }
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        damageCauses.remove(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerDeathEvent event) {
+        damageCauses.remove(event.getEntity());
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
         damageCauses.remove(event.getPlayer());
     }
 

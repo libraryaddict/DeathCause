@@ -16,7 +16,9 @@ public class DeathCauseExplosion extends DeathCause {
 
     @Override
     public Object getKiller(EntityDamageEvent event) {
-        return ((EntityDamageByEntityEvent) event).getDamager();
+        if (event instanceof EntityDamageByEntityEvent)
+            return ((EntityDamageByEntityEvent) event).getDamager();
+        return null;
     }
 
     @Override

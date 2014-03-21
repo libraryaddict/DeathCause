@@ -32,9 +32,31 @@ public class DeathHandler {
     }
 
     /**
-     * Just a method that instilizes static stuff
+     * Get all the killers of this player, with the percentage of damage they are responsible for out of 1. 1 meaning they dealt
+     * all the damage
      */
-    public static void initialize() {
+    public static HashMap<Player, Double> getDamageResponsibility(Player player) {
+        HashMap<Player, Double> damageDealt = new HashMap<Player, Double>();
+        double totalDamage = 0;
+        for (Damage damage : getDamagers(player)) {
+            if (damage.isPlayerDealt()) {
+                Player p = (Player) damage.getDamager();
+                double dmg = damage.getDamage();
+                if (dmg < 0.1)
+                    dmg = 0.1;
+                if (!damageDealt.containsKey(p)) {
+                    damageDealt.put(p, dmg);
+                } else {
+                    damageDealt.put(p, damageDealt.get(p) + dmg);
+                }
+                totalDamage += dmg;
+            }
+        }
+        HashMap<Player, Double> damageDivided = new HashMap<Player, Double>();
+        for (Player p : damageDealt.keySet()) {
+            damageDivided.put(p, damageDealt.get(p) / totalDamage);
+        }
+        return damageDivided;
     }
 
     public static ArrayList<Damage> getDamagers(Player player) {
@@ -68,13 +90,6 @@ public class DeathHandler {
         return DeathCause.UNKNOWN;
     }
 
-    public static Damage getLastDamage(Player player) {
-        if (listener.getDamages().containsKey(player)) {
-            return listener.getDamages().get(player).get(0);
-        }
-        return new Damage(DeathCause.UNKNOWN, 0, null);
-    }
-
     public static Player getKiller(Player player) {
         for (Damage damage : getDamagers(player)) {
             if (damage.isPlayerDealt()) {
@@ -93,31 +108,16 @@ public class DeathHandler {
         return null;
     }
 
+    public static Damage getLastDamage(Player player) {
+        if (listener.getDamages().containsKey(player)) {
+            return listener.getDamages().get(player).get(0);
+        }
+        return new Damage(DeathCause.UNKNOWN, 0, null);
+    }
+
     /**
-     * Get all the killers of this player, with the percentage of damage they are responsible for out of 1. 1 meaning they dealt
-     * all the damage
+     * Just a method that instilizes static stuff
      */
-    public static HashMap<Player, Double> getDamageResponsibility(Player player) {
-        HashMap<Player, Double> damageDealt = new HashMap<Player, Double>();
-        double totalDamage = 0;
-        for (Damage damage : getDamagers(player)) {
-            if (damage.isPlayerDealt()) {
-                Player p = (Player) damage.getDamager();
-                double dmg = damage.getDamage();
-                if (dmg < 0.1)
-                    dmg = 0.1;
-                if (!damageDealt.containsKey(p)) {
-                    damageDealt.put(p, dmg);
-                } else {
-                    damageDealt.put(p, damageDealt.get(p) + dmg);
-                }
-                totalDamage += dmg;
-            }
-        }
-        HashMap<Player, Double> damageDivided = new HashMap<Player, Double>();
-        for (Player p : damageDealt.keySet()) {
-            damageDivided.put(p, damageDealt.get(p) / totalDamage);
-        }
-        return damageDivided;
+    public static void initialize() {
     }
 }

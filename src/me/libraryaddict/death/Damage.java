@@ -3,10 +3,10 @@ package me.libraryaddict.death;
 import org.bukkit.entity.Player;
 
 public class Damage {
+    private double damageAmount;
     private DeathCause damageCause;
     private long damageOccured;
     private Object damager;
-    private double damageAmount;
 
     public Damage(DeathCause cause, double damageAmount, Object damager) {
         damageOccured = System.currentTimeMillis();
@@ -15,24 +15,12 @@ public class Damage {
         this.damageCause = cause;
     }
 
-    public void setCause(DeathCause cause) {
-        damageCause = cause;
-    }
-
-    public void setDamager(Object damager) {
-        this.damager = damager;
+    public DeathCause getCause() {
+        return damageCause;
     }
 
     public double getDamage() {
         return damageAmount;
-    }
-
-    public boolean isPlayerDealt() {
-        return damager != null && damager instanceof Player;
-    }
-
-    public DeathCause getCause() {
-        return damageCause;
     }
 
     public Object getDamager() {
@@ -41,5 +29,17 @@ public class Damage {
 
     public long getWhen() {
         return damageOccured;
+    }
+
+    public boolean isPlayerDealt() {
+        return damager != null && damager instanceof Player;
+    }
+
+    public void setCause(DeathCause cause) {
+        damageCause = cause;
+    }
+
+    public void setDamager(Object damager) {
+        this.damager = damager;
     }
 }
