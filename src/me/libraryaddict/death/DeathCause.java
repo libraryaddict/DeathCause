@@ -24,6 +24,7 @@ public abstract class DeathCause {
     public static DeathCause FIRE = new DeathCauseFire();
     public static DeathCause LAVA = new DeathCauseLava();
     public static DeathCause LIGHTNING = new DeathCauseLightning();
+    public static DeathCause FIGHT_PLAYER = new DeathCauseFightPlayer();
     public static DeathCause POTION = new DeathCausePotion();
     public static DeathCause SHOT = new DeathCauseShot();
     public static DeathCause STARVE = new DeathCauseStarve();
@@ -42,6 +43,7 @@ public abstract class DeathCause {
         EXPLODED.registerDeathMessage("%Killed% got a mouthful of explosions");
         FALL.registerDeathMessage("%Killed% fell to their death");
         FIGHT.registerDeathMessage("%Killed% was slain by %Killer%");
+        FIGHT_PLAYER.registerDeathMessage("%Killed% was slain by %Killer%");
         FIRE.registerDeathMessage("%Killed% burned to death");
         LAVA.registerDeathMessage("%Killed% was cooked in lava");
         LIGHTNING.registerDeathMessage("%Killed% was shocked by lightning");
@@ -59,6 +61,7 @@ public abstract class DeathCause {
         deathCauses.add(DeathCause.DROWN);
         deathCauses.add(DeathCause.EXPLODED);
         deathCauses.add(DeathCause.FALL);
+        deathCauses.add(DeathCause.FIGHT_PLAYER);
         deathCauses.add(DeathCause.FIGHT);
         deathCauses.add(DeathCause.FIRE);
         deathCauses.add(DeathCause.LAVA);
@@ -95,15 +98,17 @@ public abstract class DeathCause {
         return DeathCause.UNKNOWN;
     }
 
-    public void registerDeathMessage(String message) {
-        deathMessages.add(message);
+    public void registerDeathMessage(String... messages) {
+        for (String message : messages) {
+            deathMessages.add(message);
+        }
     }
 
     public String getName() {
         return getClass().getSimpleName();
     }
 
-    protected String getMessage() {
+    public String getDeathMessage() {
         if (deathMessages.isEmpty()) {
             throw new RuntimeException("No death messages found in DeathCause " + getName());
         }
