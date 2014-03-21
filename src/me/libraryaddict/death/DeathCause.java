@@ -28,6 +28,7 @@ public abstract class DeathCause {
     public static DeathCause POTION = new DeathCausePotion();
     public static DeathCause SHOT = new DeathCauseShot();
     public static DeathCause STARVE = new DeathCauseStarve();
+    public static DeathCause PUSHED_FALL = new DeathCausePushedFall();
     public static DeathCause SUFFOCATION = new DeathCauseSuffocation();
     public static DeathCause SUICIDE = new DeathCauseSuicide();
     public static DeathCause UNKNOWN = new DeathCauseUnknown();
@@ -48,6 +49,7 @@ public abstract class DeathCause {
         LAVA.registerDeathMessage("%Killed% was cooked in lava");
         LIGHTNING.registerDeathMessage("%Killed% was shocked by lightning");
         POTION.registerDeathMessage("%Killed% took %Killer%'s potion to the face");
+        PUSHED_FALL.registerDeathMessage("%Killed% was pushed off a cliff by %Killer%");
         SHOT.registerDeathMessage("%Killed% was shot by %Killer%");
         STARVE.registerDeathMessage("%Killed% starved to death (somehow)");
         SUFFOCATION.registerDeathMessage("%Killed% suffocated to death");
