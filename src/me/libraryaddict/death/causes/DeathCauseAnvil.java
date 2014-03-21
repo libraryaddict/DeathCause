@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import me.libraryaddict.death.DeathCause;
 
-public class Anvil extends DeathCause {
+public class DeathCauseAnvil extends DeathCause {
 
     @Override
     public String getDeathMessage(LivingEntity entity, Object damager) {

@@ -2,9 +2,11 @@ package me.libraryaddict.death.causes;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+
 import me.libraryaddict.death.DeathCause;
 
-public class Unknown extends DeathCause {
+public class DeathCauseStarve extends DeathCause {
 
     @Override
     public String getDeathMessage(LivingEntity entity, Object damager) {
@@ -18,7 +20,7 @@ public class Unknown extends DeathCause {
 
     @Override
     public boolean isCauseOfDeath(EntityDamageEvent event) {
-        return true;
+        return event.getCause() == DamageCause.STARVATION;
     }
 
 }

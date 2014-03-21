@@ -6,7 +6,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import me.libraryaddict.death.DeathCause;
 
-public class Shot extends DeathCause {
+public class DeathCauseShot extends DeathCause {
 
     @Override
     public String getDeathMessage(LivingEntity entity, Object damager) {

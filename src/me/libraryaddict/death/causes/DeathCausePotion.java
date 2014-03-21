@@ -1,26 +1,30 @@
 package me.libraryaddict.death.causes;
 
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import me.libraryaddict.death.DeathCause;
 
-public class Explosion extends DeathCause {
+public class DeathCausePotion extends DeathCause {
 
     @Override
     public String getDeathMessage(LivingEntity entity, Object damager) {
-        return getMessage().replace("%Killed%", getName(entity));
+        return getMessage().replace("%Killed%", getName(entity)).replace("%Killer%", getName(damager));
     }
 
     @Override
     public Object getKiller(EntityDamageEvent event) {
-        return ((EntityDamageByEntityEvent) event).getDamager();
+        EntityDamageByEntityEvent eventDamage = (EntityDamageByEntityEvent) event;
+        ThrownPotion potion = (ThrownPotion) eventDamage.getDamager();
+        return potion.getShooter();
     }
 
     @Override
     public boolean isCauseOfDeath(EntityDamageEvent event) {
-        return event.getCause() == DamageCause.ENTITY_EXPLOSION || event.getCause() == DamageCause.BLOCK_EXPLOSION;
+        return event.getCause() == DamageCause.MAGIC;
     }
+
 }

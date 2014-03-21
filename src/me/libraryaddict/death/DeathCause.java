@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import me.libraryaddict.death.causes.*;
-import me.libraryaddict.death.causes.Void;
+import me.libraryaddict.death.causes.DeathCauseVoid;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.block.Dispenser;
@@ -14,24 +14,24 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public abstract class DeathCause {
-    public static DeathCause ANVIL = new Anvil();
-    public static DeathCause CACTUS = new Cactus();
-    public static DeathCause CREEPER_EXPLOSION = new CreeperExplosion();
-    public static DeathCause DROWN = new Drown();
-    public static DeathCause EXPLODED = new Explosion();
-    public static DeathCause FALL = new Fall();
-    public static DeathCause FIGHT = new Fight();
-    public static DeathCause FIRE = new Fire();
-    public static DeathCause LAVA = new Lava();
-    public static DeathCause LIGHTNING = new Lightning();
-    public static DeathCause POTION = new Potion();
-    public static DeathCause SHOT = new Shot();
-    public static DeathCause STARVE = new Starve();
-    public static DeathCause SUFFOCATION = new Suffocation();
-    public static DeathCause SUICIDE = new Suicide();
-    public static DeathCause UNKNOWN = new Unknown();
-    public static DeathCause VOID = new Void();
-    public static DeathCause WITHER = new Wither();
+    public static DeathCause ANVIL = new DeathCauseAnvil();
+    public static DeathCause CACTUS = new DeathCauseCactus();
+    public static DeathCause CREEPER_EXPLOSION = new DeathCauseCreeperExplosion();
+    public static DeathCause DROWN = new DeathCauseDrown();
+    public static DeathCause EXPLODED = new DeathCauseExplosion();
+    public static DeathCause FALL = new DeathCauseFall();
+    public static DeathCause FIGHT = new DeathCauseFight();
+    public static DeathCause FIRE = new DeathCauseFire();
+    public static DeathCause LAVA = new DeathCauseLava();
+    public static DeathCause LIGHTNING = new DeathCauseLightning();
+    public static DeathCause POTION = new DeathCausePotion();
+    public static DeathCause SHOT = new DeathCauseShot();
+    public static DeathCause STARVE = new DeathCauseStarve();
+    public static DeathCause SUFFOCATION = new DeathCauseSuffocation();
+    public static DeathCause SUICIDE = new DeathCauseSuicide();
+    public static DeathCause UNKNOWN = new DeathCauseUnknown();
+    public static DeathCause VOID = new DeathCauseVoid();
+    public static DeathCause WITHER = new DeathCauseWither();
     private static ArrayList<DeathCause> deathCauses = new ArrayList<DeathCause>();
     private ArrayList<String> deathMessages = new ArrayList<String>();
     static {
