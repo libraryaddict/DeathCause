@@ -24,6 +24,11 @@ public class DeathHandler {
                 Bukkit.getPluginManager().registerEvents(listener, p);
             }
         });
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            public void run() {
+                listener.checkDamages();
+            }
+        }, 40, 40);
     }
 
     /**

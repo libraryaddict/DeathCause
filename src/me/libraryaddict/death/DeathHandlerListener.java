@@ -26,6 +26,30 @@ public class DeathHandlerListener implements Listener {
         damageCauses.remove(event.getPlayer());
     }
 
+    public void checkDamages() {
+        Iterator<Player> pItel = damageCauses.keySet().iterator();
+        while (pItel.hasNext()) {
+            Player p = pItel.next();
+            checkDamages(p);
+            if (damageCauses.get(p).isEmpty()) {
+                pItel.remove();
+            }
+        }
+    }
+
+    public void checkDamages(Player p) {
+        double hp = p.getMaxHealth() - p.getHealth();
+        Iterator<Damage> itel = damageCauses.get(p).iterator();
+        while (itel.hasNext()) {
+            Damage dmg = itel.next();
+            if (hp <= 0) {
+                itel.remove();
+            } else {
+                hp -= dmg.getDamage();
+            }
+        }
+    }
+
     @EventHandler
     public void onRespawn(PlayerDeathEvent event) {
         damageCauses.remove(event.getEntity());
@@ -47,16 +71,7 @@ public class DeathHandlerListener implements Listener {
             if (cause != DeathCause.UNKNOWN || event.getDamage() != 0) {
                 Player p = (Player) event.getEntity();
                 if (damageCauses.containsKey(p)) {
-                    double hp = p.getMaxHealth() - p.getHealth();
-                    Iterator<Damage> itel = damageCauses.get(p).iterator();
-                    while (itel.hasNext()) {
-                        Damage dmg = itel.next();
-                        if (hp <= 0) {
-                            itel.remove();
-                        } else {
-                            hp -= dmg.getDamage();
-                        }
-                    }
+                    checkDamages(p);
                 } else {
                     damageCauses.put(p, new ArrayList<Damage>());
                 }
