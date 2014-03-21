@@ -15,6 +15,14 @@ public class Damage {
         this.damageCause = cause;
     }
 
+    public void setCause(DeathCause cause) {
+        damageCause = cause;
+    }
+
+    public void setDamager(Object damager) {
+        this.damager = damager;
+    }
+
     public double getDamage() {
         return damageAmount;
     }
