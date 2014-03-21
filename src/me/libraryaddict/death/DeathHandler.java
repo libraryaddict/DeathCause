@@ -25,6 +25,11 @@ public class DeathHandler {
             }
         });
     }
+    /**
+     * Just a method that instilizes static stuff
+     */
+    public static void initialize() {
+    }
 
     public static ArrayList<Damage> getDamagers(Player player) {
         if (listener.getDamages().containsKey(player)) {
