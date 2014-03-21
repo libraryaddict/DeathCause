@@ -11,7 +11,7 @@ public class DeathCauseAnvil extends DeathCause {
 
     @Override
     public String getDeathMessage(LivingEntity entity, Object damager) {
-        return getMessage().replace("%Killed%", getName(entity));
+        return getDeathMessage().replace("%Killed%", getName(entity));
     }
 
     @Override

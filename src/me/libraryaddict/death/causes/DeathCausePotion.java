@@ -12,7 +12,7 @@ public class DeathCausePotion extends DeathCause {
 
     @Override
     public String getDeathMessage(LivingEntity entity, Object damager) {
-        return getMessage().replace("%Killed%", getName(entity)).replace("%Killer%", getName(damager));
+        return getDeathMessage().replace("%Killed%", getName(entity)).replace("%Killer%", getName(damager));
     }
 
     @Override
