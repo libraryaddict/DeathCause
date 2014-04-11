@@ -168,7 +168,7 @@ public abstract class DeathCause {
     }
 
     public String getDeathMessage(String killedName, String killerName) {
-        return getDeathMessage().replace("%Killed%", killedName).replace("%Killer%", killerName);
+        return getDeathMessage().replace("%Killed%", killedName).replace("%Killer%", killerName == null ? "" : killerName);
     }
 
     public abstract Object getKiller(EntityDamageEvent event);
