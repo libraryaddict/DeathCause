@@ -1,17 +1,12 @@
 package me.libraryaddict.death.causes;
 
 import org.bukkit.entity.Creeper;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class DeathCauseCreeperExplosion extends DeathCauseExplosion {
 
-    @Override
-    public String getDeathMessage(LivingEntity entity, Object damager) {
-        return getDeathMessage().replace("%Killed%", getName(entity));
-    }
 
     @Override
     public boolean isCauseOfDeath(EntityDamageEvent event) {

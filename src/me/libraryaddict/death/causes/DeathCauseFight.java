@@ -10,10 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class DeathCauseFight extends DeathCause {
 
-    @Override
-    public String getDeathMessage(LivingEntity entity, Object damager) {
-        return getDeathMessage().replace("%Killed%", getName(entity)).replace("%Killer%", getName(damager));
-    }
+
 
     public Entity getKiller(EntityDamageEvent event) {
         return ((EntityDamageByEntityEvent) event).getDamager();

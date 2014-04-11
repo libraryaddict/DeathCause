@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import me.libraryaddict.death.causes.*;
-import me.libraryaddict.death.causes.DeathCauseVoid;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.block.Dispenser;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public abstract class DeathCause {
     public static DeathCause ANVIL = new DeathCauseAnvil();
@@ -19,8 +19,8 @@ public abstract class DeathCause {
     public static DeathCause CREEPER_EXPLOSION = new DeathCauseCreeperExplosion();
     public static DeathCause DROWN = new DeathCauseDrown();
     public static DeathCause ENDERPEARL = new DeathCauseEnderpearl();
-    public static DeathCause SHOT_FALL = new DeathCauseBase();
-    public static DeathCause SHOT_VOID = new DeathCauseBase();
+    public static DeathCause SHOT_FALL = new DeathCauseGeneric();
+    public static DeathCause SHOT_VOID = new DeathCauseGeneric();
     public static DeathCause EXPLODED = new DeathCauseExplosion();
     public static DeathCause FALL = new DeathCauseFall();
     public static DeathCause FIGHT = new DeathCauseFight();
@@ -31,8 +31,8 @@ public abstract class DeathCause {
     public static DeathCause POTION = new DeathCausePotion();
     public static DeathCause SHOT = new DeathCauseShot();
     public static DeathCause STARVE = new DeathCauseStarve();
-    public static DeathCause PUSHED_FALL = new DeathCauseBase();
-    public static DeathCause PUSHED_VOID = new DeathCauseBase();
+    public static DeathCause PUSHED_FALL = new DeathCauseGeneric();
+    public static DeathCause PUSHED_VOID = new DeathCauseGeneric();
     public static DeathCause SUFFOCATION = new DeathCauseSuffocation();
     public static DeathCause SUICIDE = new DeathCauseSuicide();
     public static DeathCause UNKNOWN = new DeathCauseUnknown();
@@ -93,8 +93,9 @@ public abstract class DeathCause {
 
     public static DeathCause getDeathCause(LivingEntity entity) {
         if (entity.getLastDamageCause() == null) {
-            System.out.println("[DeathCause] Cannot find the death cause for " + entity + " as there is no damage event");
-            return DeathCause.UNKNOWN;
+            entity.setLastDamageCause(new EntityDamageEvent(entity, DamageCause.CUSTOM, 0));
+            // System.out.println("[DeathCause] Cannot find the death cause for " + entity + " as there is no damage event");
+            // return DeathCause.UNKNOWN;
         }
         return getDeathCause(entity.getLastDamageCause());
     }
@@ -130,7 +131,10 @@ public abstract class DeathCause {
         deathMessages.clear();
     }
 
-    protected String getName(Object obj) {
+    public static String getEntityName(Object obj) {
+        if (obj == null) {
+            return "";
+        }
         if (obj instanceof Entity) {
             Entity entity = (Entity) obj;
             if (entity instanceof HumanEntity) {
@@ -151,7 +155,21 @@ public abstract class DeathCause {
         return obj.toString();
     }
 
-    public abstract String getDeathMessage(LivingEntity entity, Object damager);
+    final public String getDeathMessage(LivingEntity entity, Object damager) {
+        return getDeathMessage(getEntityName(entity), getEntityName(damager));
+    }
+
+    public String getDeathMessage(String killed, Object killer) {
+        return getDeathMessage(killed, getEntityName(killer));
+    }
+
+    public String getDeathMessage(Object killed, String killer) {
+        return getDeathMessage(getEntityName(killed), killer);
+    }
+
+    public String getDeathMessage(String killedName, String killerName) {
+        return getDeathMessage().replace("%Killed%", killedName).replace("%Killer%", killerName);
+    }
 
     public abstract Object getKiller(EntityDamageEvent event);
 
