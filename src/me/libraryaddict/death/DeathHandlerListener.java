@@ -69,7 +69,7 @@ public class DeathHandlerListener implements Listener {
                 if (pushed.containsKey(p)) {
                     if (newDamage.getCause() == DeathCause.FALL || newDamage.getCause() == DeathCause.VOID) {
                         Damage oldCause = pushed.remove(p);
-                        if (oldCause.getCause() instanceof DeathCauseFight) {
+                        if (oldCause.getCause() == DeathCause.FIGHT) {
                             if (newDamage.getCause() == DeathCause.FALL) {
                                 newDamage.setCause(DeathCause.PUSHED_FALL);
                             } else {
@@ -88,7 +88,7 @@ public class DeathHandlerListener implements Listener {
                     }
                 }
                 if (!p.getAllowFlight() && (!pushed.containsKey(p) || p.getFallDistance() == 0)) {
-                    if (newDamage.getCause() instanceof DeathCauseFight || newDamage.getCause() == DeathCause.SHOT) {
+                    if (newDamage.getCause() == DeathCause.FIGHT || newDamage.getCause() == DeathCause.SHOT) {
                         pushed.put(p, newDamage);
                     }
                 }

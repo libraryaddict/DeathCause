@@ -27,7 +27,6 @@ public abstract class DeathCause {
     public static DeathCause FIRE = new DeathCauseFire();
     public static DeathCause LAVA = new DeathCauseLava();
     public static DeathCause LIGHTNING = new DeathCauseLightning();
-    public static DeathCause FIGHT_PLAYER = new DeathCauseFightPlayer();
     public static DeathCause POTION = new DeathCausePotion();
     public static DeathCause SHOT = new DeathCauseShot();
     public static DeathCause STARVE = new DeathCauseStarve();
@@ -49,7 +48,6 @@ public abstract class DeathCause {
         EXPLODED.registerDeathMessage("%Killed% got a mouthful of explosions");
         FALL.registerDeathMessage("%Killed% fell to their death");
         FIGHT.registerDeathMessage("%Killed% was slain by %Killer%");
-        FIGHT_PLAYER.registerDeathMessage("%Killed% was slain by %Killer%");
         FIRE.registerDeathMessage("%Killed% burned to death");
         LAVA.registerDeathMessage("%Killed% was cooked in lava");
         LIGHTNING.registerDeathMessage("%Killed% was shocked by lightning");
@@ -72,7 +70,6 @@ public abstract class DeathCause {
         deathCauses.add(DeathCause.ENDERPEARL);
         deathCauses.add(DeathCause.EXPLODED);
         deathCauses.add(DeathCause.FALL);
-        deathCauses.add(DeathCause.FIGHT_PLAYER);
         deathCauses.add(DeathCause.FIGHT);
         deathCauses.add(DeathCause.FIRE);
         deathCauses.add(DeathCause.LAVA);
@@ -168,7 +165,30 @@ public abstract class DeathCause {
     }
 
     public String getDeathMessage(String killedName, String killerName) {
-        return getDeathMessage().replace("%Killed%", killedName).replace("%Killer%", killerName == null ? "" : killerName);
+        String deathMessage = getDeathMessage();
+        {
+            char[] chars = killedName.toCharArray();
+            int starting = chars.length;
+            while (starting - 2 > 0 && chars[starting - 2] == '§') {
+                starting--;
+            }
+            deathMessage = deathMessage.replace("%Killed%'s",
+                    killedName.substring(0, starting - 1) + "'s" + killedName.substring(starting - 1)).replace("%Killed%",
+                    killedName);
+        }
+        if (killerName != null) {
+            {
+                char[] chars = killerName.toCharArray();
+                int starting = chars.length;
+                while (starting - 2 > 0 && chars[starting - 2] == '§') {
+                    starting--;
+                }
+                deathMessage = deathMessage.replace("%Killer%'s",
+                        killerName.substring(0, starting - 1) + "'s" + killerName.substring(starting - 1)).replace("%Killer%",
+                        killerName);
+            }
+        }
+        return deathMessage;
     }
 
     public abstract Object getKiller(EntityDamageEvent event);

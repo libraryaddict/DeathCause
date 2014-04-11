@@ -10,8 +10,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class DeathCauseFight extends DeathCause {
 
-
-
     public Entity getKiller(EntityDamageEvent event) {
         return ((EntityDamageByEntityEvent) event).getDamager();
     }
