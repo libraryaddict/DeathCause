@@ -45,7 +45,7 @@ public abstract class DeathCause {
         CREEPER_EXPLOSION.registerDeathMessage("%Killed% was blown up by %Killer%");
         DROWN.registerDeathMessage("%Killed% forgot to swim");
         ENDERPEARL.registerDeathMessage("%Killed% took too much damage using enderpearls");
-        EXPLODED.registerDeathMessage("%Killed% got a mouthful of explosions");
+        EXPLODED.registerDeathMessage("%Killed% was caught in a explosion!");
         FALL.registerDeathMessage("%Killed% fell to their death");
         FIGHT.registerDeathMessage("%Killed% was slain by %Killer%");
         FIRE.registerDeathMessage("%Killed% burned to death");
@@ -183,9 +183,10 @@ public abstract class DeathCause {
                 while (starting - 2 > 0 && chars[starting - 2] == '§') {
                     starting--;
                 }
-                deathMessage = deathMessage.replace("%Killer%'s",
-                        killerName.substring(0, starting - 1) + "'s" + killerName.substring(starting - 1)).replace("%Killer%",
-                        killerName);
+                deathMessage = deathMessage.replace(
+                        "%Killer%'s",
+                        killerName.substring(0, Math.max(0, starting - 1)) + "'s"
+                                + killerName.substring(Math.max(0, starting - 1))).replace("%Killer%", killerName);
             }
         }
         return deathMessage;
