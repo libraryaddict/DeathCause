@@ -6,10 +6,24 @@ import java.util.Iterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 public class DeathHandler {
     private static DeathHandlerListener listener = new DeathHandlerListener();
+    private static DeathCheck deathCheck = new DeathCheck() {
+
+        @Override
+        public boolean isValid(Player player) {
+            return true;
+        }
+
+    };
+
+    public static void setDeathCheck(DeathCheck newDeathCheck) {
+        deathCheck = newDeathCheck;
+    }
+
     static {
         Plugin plugin = null;
         for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
@@ -29,6 +43,7 @@ public class DeathHandler {
                 listener.checkDamages();
             }
         }, 40, 40);
+        DeathListener.setListener(listener);
     }
 
     /**
@@ -41,15 +56,17 @@ public class DeathHandler {
         for (Damage damage : getDamagers(player)) {
             if (damage.isPlayerDealt()) {
                 Player p = (Player) damage.getDamager();
-                double dmg = damage.getDamage();
-                if (dmg < 0.1)
-                    dmg = 0.1;
-                if (!damageDealt.containsKey(p)) {
-                    damageDealt.put(p, dmg);
-                } else {
-                    damageDealt.put(p, damageDealt.get(p) + dmg);
+                if (p.isOnline() && deathCheck.isValid(p)) {
+                    double dmg = damage.getDamage();
+                    if (dmg < 0.1)
+                        dmg = 0.1;
+                    if (!damageDealt.containsKey(p)) {
+                        damageDealt.put(p, dmg);
+                    } else {
+                        damageDealt.put(p, damageDealt.get(p) + dmg);
+                    }
+                    totalDamage += dmg;
                 }
-                totalDamage += dmg;
             }
         }
         HashMap<Player, Double> damageDivided = new HashMap<Player, Double>();
@@ -108,11 +125,32 @@ public class DeathHandler {
         return null;
     }
 
+    public static void addDamage(Player player, Damage damage) {
+        if (!listener.getDamages().containsKey(player)) {
+            listener.getDamages().put(player, new ArrayList<Damage>());
+        }
+        listener.getDamages().get(player).add(0, damage);
+    }
+
     public static Damage getLastDamage(Player player) {
         if (listener.getDamages().containsKey(player)) {
             return listener.getDamages().get(player).get(0);
         }
         return new Damage(DeathCause.UNKNOWN, 0, null);
+    }
+
+    public static void registerListener(DeathListener deathListener) {
+        if (deathListener instanceof Listener) {
+            Plugin plugin = null;
+            for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
+                if (p.isEnabled()) {
+                    plugin = p;
+                    break;
+                }
+            }
+            Bukkit.getPluginManager().registerEvents((Listener) deathListener, plugin);
+        }
+        listener.addListener(deathListener);
     }
 
     /**
