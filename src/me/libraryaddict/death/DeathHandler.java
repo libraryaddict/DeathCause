@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import me.libraryaddict.death.listeners.PushedDeathListener;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -44,6 +46,7 @@ public class DeathHandler {
             }
         }, 40, 40);
         DeathListener.setListener(listener);
+        listener.addListener(new PushedDeathListener());
     }
 
     /**
