@@ -33,6 +33,7 @@ public abstract class DeathCause {
     public static DeathCause PUSHED_FALL = new DeathCauseGeneric();
     public static DeathCause PUSHED_VOID = new DeathCauseGeneric();
     public static DeathCause SUFFOCATION = new DeathCauseSuffocation();
+    public static DeathCause THORNS = new DeathCauseThorns();
     public static DeathCause SUICIDE = new DeathCauseSuicide();
     public static DeathCause UNKNOWN = new DeathCauseUnknown();
     public static DeathCause VOID = new DeathCauseVoid();
@@ -59,6 +60,7 @@ public abstract class DeathCause {
         SHOT_VOID.registerDeathMessage("%Killed% was shot into the void by %Killer%");
         STARVE.registerDeathMessage("%Killed% starved to death (somehow)");
         SUFFOCATION.registerDeathMessage("%Killed% suffocated to death");
+        THORNS.registerDeathMessage("%Killed% was killed by the thorns on %Killer%");
         SUICIDE.registerDeathMessage("%Killed% pressed the suicide button");
         VOID.registerDeathMessage("%Killed% fell into the void");
         WITHER.registerDeathMessage("%Killed% sucked on a vial of wither poison");
