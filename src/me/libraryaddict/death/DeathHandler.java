@@ -46,7 +46,7 @@ public class DeathHandler {
             }
         }, 40, 40);
         DeathListener.setListener(listener);
-        listener.addListener(new PushedDeathListener());
+        registerListener(new PushedDeathListener());
     }
 
     /**
