@@ -8,11 +8,13 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.util.Vector;
 
 import me.libraryaddict.death.Damage;
 import me.libraryaddict.death.DeathCause;
-import me.libraryaddict.death.DeathHandler;
 import me.libraryaddict.death.DeathListener;
+import me.libraryaddict.death.causes.DeathCauseFight;
+import me.libraryaddict.death.causes.DeathCauseProjectile;
 
 public class PushedDeathListener extends DeathListener {
 
@@ -26,17 +28,24 @@ public class PushedDeathListener extends DeathListener {
     }
 
     @Override
+    public boolean canRemove(Player p, Damage damage) {
+        return !pushed.containsValue(damage);
+    }
+
+    @Override
     public void onDamage(Player p, Damage newDamage) {
+        // If he was knocked around
         if (pushed.containsKey(p)) {
+            // If the new damage is fall or void
             if (newDamage.getCause() == DeathCause.FALL || newDamage.getCause() == DeathCause.VOID) {
                 Damage oldCause = pushed.remove(p);
-                if (oldCause.getCause() == DeathCause.FIGHT) {
+                if (oldCause.getCause() instanceof DeathCauseFight) {
                     if (newDamage.getCause() == DeathCause.FALL) {
                         newDamage.setCause(DeathCause.PUSHED_FALL);
                     } else {
                         newDamage.setCause(DeathCause.PUSHED_VOID);
                     }
-                } else {
+                } else if (oldCause.getCause() instanceof DeathCauseProjectile) {
                     if (newDamage.getCause() == DeathCause.FALL) {
                         newDamage.setCause(DeathCause.SHOT_FALL);
                     } else {
@@ -44,12 +53,10 @@ public class PushedDeathListener extends DeathListener {
                     }
                 }
                 newDamage.setDamager(oldCause.getDamager());
-            } else if (p.getFallDistance() == 0) {
-                pushed.remove(p);
             }
         }
-        if (!p.getAllowFlight() && (!pushed.containsKey(p) || p.getFallDistance() == 0)) {
-            if (newDamage.getCause() == DeathCause.FIGHT || newDamage.getCause() == DeathCause.SHOT) {
+        if (!p.getAllowFlight() && (!pushed.containsKey(p) || p.getFallDistance() == 0 || p.isOnGround())) {
+            if (newDamage.getCause() instanceof DeathCauseFight || newDamage.getCause() instanceof DeathCauseProjectile) {
                 pushed.put(p, newDamage);
             }
         }
@@ -66,10 +73,11 @@ public class PushedDeathListener extends DeathListener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (pushed.containsKey(event.getPlayer())) {
-            if (event.getPlayer().getFallDistance() == 0 && event.getPlayer().isOnGround()
-                    && DeathHandler.getLastDamage(event.getPlayer()).getWhen() + 500 < System.currentTimeMillis()) {
-                pushed.remove(event.getPlayer());
+        Player p = event.getPlayer();
+        if (pushed.containsKey(p)) {
+            if ((p.getFallDistance() <= 0.5 || p.isOnGround())
+                    && pushed.get(p).getWhen() + (p.getVelocity().length() < 0.05 ? 900 : 3000) < System.currentTimeMillis()) {
+                pushed.remove(p);
             }
         }
     }
@@ -81,7 +89,7 @@ public class PushedDeathListener extends DeathListener {
     }
 
     @EventHandler
-    public void onRespawn(PlayerDeathEvent event) {
+    public void onDeath(PlayerDeathEvent event) {
         getListener().getDamages().remove(event.getEntity());
         pushed.remove(event.getEntity());
     }
