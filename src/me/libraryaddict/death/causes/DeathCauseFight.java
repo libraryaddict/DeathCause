@@ -16,8 +16,8 @@ public class DeathCauseFight extends DeathCause {
 
     @Override
     public boolean isCauseOfDeath(EntityDamageEvent event) {
-        if (event.getCause() == DamageCause.ENTITY_ATTACK) {
-            return getKiller(event) instanceof LivingEntity;
+        if (event.getCause() == DamageCause.ENTITY_ATTACK && getKiller(event) instanceof LivingEntity) {
+            return true;
         }
         return false;
     }
