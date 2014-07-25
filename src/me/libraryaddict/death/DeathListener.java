@@ -9,6 +9,10 @@ public abstract class DeathListener {
         deathListener = listener;
     }
 
+    public boolean canRemove(Player p, Damage damage) {
+        return true;
+    }
+
     public abstract void checkDamages(Player p);
 
     public abstract void onDamage(Player p, Damage damage);

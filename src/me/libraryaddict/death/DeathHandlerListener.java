@@ -38,7 +38,15 @@ public class DeathHandlerListener implements Listener {
             Damage dmg = itel.next();
             if (hp == 0) {
                 if (dmg.getDamage() > 0 || remove) {
-                    itel.remove();
+                    boolean canRemove = true;
+                    for (DeathListener listener : listeners) {
+                        if (!listener.canRemove(p, dmg)) {
+                            canRemove = false;
+                            break;
+                        }
+                    }
+                    if (canRemove)
+                        itel.remove();
                     remove = true;
                 }
             } else {
@@ -61,7 +69,7 @@ public class DeathHandlerListener implements Listener {
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player && !event.isCancelled()) {
             DeathCause cause = DeathCause.getDeathCause(event);
-            if (cause != DeathCause.UNKNOWN || event.getDamage() != 0) {
+            if (cause != DeathCause.UNKNOWN || event.getDamage() > 0) {
                 Player p = (Player) event.getEntity();
                 if (damageCauses.containsKey(p)) {
                     checkDamages(p);
@@ -77,5 +85,4 @@ public class DeathHandlerListener implements Listener {
             }
         }
     }
-
 }
