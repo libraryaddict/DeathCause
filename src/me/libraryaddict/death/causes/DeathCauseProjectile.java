@@ -5,7 +5,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import me.libraryaddict.death.DeathCause;
 
-public class DeathCauseShot extends DeathCause {
+public class DeathCauseProjectile extends DeathCause {
 
 
     @Override
