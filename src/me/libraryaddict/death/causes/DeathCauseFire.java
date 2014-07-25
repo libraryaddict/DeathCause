@@ -7,8 +7,6 @@ import me.libraryaddict.death.DeathCause;
 
 public class DeathCauseFire extends DeathCause {
 
-  
-
     @Override
     public Object getKiller(EntityDamageEvent event) {
         return null;

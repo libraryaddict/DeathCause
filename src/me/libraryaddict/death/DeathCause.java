@@ -28,7 +28,7 @@ public abstract class DeathCause {
     public static DeathCause LAVA = new DeathCauseLava();
     public static DeathCause LIGHTNING = new DeathCauseLightning();
     public static DeathCause POTION = new DeathCausePotion();
-    public static DeathCause SHOT = new DeathCauseShot();
+    public static DeathCause SHOT = new DeathCauseProjectile();
     public static DeathCause STARVE = new DeathCauseStarve();
     public static DeathCause PUSHED_FALL = new DeathCauseGeneric();
     public static DeathCause PUSHED_VOID = new DeathCauseGeneric();

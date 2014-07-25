@@ -61,6 +61,8 @@ public class DeathHandler {
                 Player p = (Player) damage.getDamager();
                 if (p.isOnline() && deathCheck.isValid(p)) {
                     double dmg = damage.getDamage();
+                    if (dmg == 0)
+                        continue;
                     if (dmg < 0.1)
                         dmg = 0.1;
                     if (!damageDealt.containsKey(p)) {
@@ -92,7 +94,7 @@ public class DeathHandler {
     public static ArrayList<Damage> getDamagers(Player player, long cutoffTime) {
         ArrayList<Damage> damage = new ArrayList<Damage>();
         if (listener.getDamages().containsKey(player)) {
-            damage.addAll(listener.getDamages().get(player));
+            damage = new ArrayList<Damage>(listener.getDamages().get(player));
         }
         Iterator<Damage> itel = damage.iterator();
         while (itel.hasNext()) {
