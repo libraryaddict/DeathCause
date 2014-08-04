@@ -1,15 +1,17 @@
 package me.libraryaddict.death.causes;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+
 import me.libraryaddict.death.DeathCause;
 
 public class DeathCauseAnvil extends DeathCause {
 
     @Override
-    public Object getKiller(EntityDamageEvent event) {
+    public Entity getKiller(EntityDamageEvent event) {
         return null;
     }
 

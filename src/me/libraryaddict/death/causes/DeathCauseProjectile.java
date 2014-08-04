@@ -1,18 +1,19 @@
 package me.libraryaddict.death.causes;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+
 import me.libraryaddict.death.DeathCause;
 
 public class DeathCauseProjectile extends DeathCause {
 
-
     @Override
-    public Object getKiller(EntityDamageEvent event) {
+    public Entity getKiller(EntityDamageEvent event) {
         org.bukkit.entity.Projectile projectile = (org.bukkit.entity.Projectile) ((EntityDamageByEntityEvent) event).getDamager();
-        if (projectile.getShooter() != null) {
-            return projectile.getShooter();
+        if (projectile.getShooter() != null && projectile.getShooter() instanceof Entity) {
+            return (Entity) projectile.getShooter();
         }
         return null;
     }

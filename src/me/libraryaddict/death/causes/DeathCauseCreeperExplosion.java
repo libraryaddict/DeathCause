@@ -7,7 +7,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class DeathCauseCreeperExplosion extends DeathCauseExplosion {
 
-
     @Override
     public boolean isCauseOfDeath(EntityDamageEvent event) {
         if (event.getCause() == DamageCause.ENTITY_EXPLOSION) {

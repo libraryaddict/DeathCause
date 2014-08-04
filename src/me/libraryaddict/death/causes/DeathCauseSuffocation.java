@@ -1,5 +1,6 @@
 package me.libraryaddict.death.causes;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
@@ -7,10 +8,8 @@ import me.libraryaddict.death.DeathCause;
 
 public class DeathCauseSuffocation extends DeathCause {
 
-
-
     @Override
-    public Object getKiller(EntityDamageEvent event) {
+    public Entity getKiller(EntityDamageEvent event) {
         return null;
     }
 
