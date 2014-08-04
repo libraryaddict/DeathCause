@@ -38,6 +38,9 @@ public class DeathHandler {
         Bukkit.getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
             public void run() {
                 Bukkit.getPluginManager().registerEvents(listener, p);
+                PushedDeathListener listen = new PushedDeathListener();
+                registerListener(listen);
+                Bukkit.getPluginManager().registerEvents(listen, p);
             }
         });
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -46,7 +49,6 @@ public class DeathHandler {
             }
         }, 40, 40);
         DeathListener.setListener(listener);
-        registerListener(new PushedDeathListener());
     }
 
     /**

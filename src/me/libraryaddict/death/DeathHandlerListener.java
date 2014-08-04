@@ -16,7 +16,7 @@ public class DeathHandlerListener implements Listener {
     private ArrayList<DeathListener> listeners = new ArrayList<DeathListener>();
 
     public void addListener(DeathListener listener) {
-        listeners.add(listener);
+        listeners.add(0, listener);
     }
 
     public void checkDamages() {

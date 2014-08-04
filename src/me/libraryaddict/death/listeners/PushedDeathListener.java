@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.util.Vector;
 
 import me.libraryaddict.death.Damage;
 import me.libraryaddict.death.DeathCause;
@@ -16,7 +16,7 @@ import me.libraryaddict.death.DeathListener;
 import me.libraryaddict.death.causes.DeathCauseFight;
 import me.libraryaddict.death.causes.DeathCauseProjectile;
 
-public class PushedDeathListener extends DeathListener {
+public class PushedDeathListener extends DeathListener implements Listener {
 
     private HashMap<Player, Damage> pushed = new HashMap<Player, Damage>();
 
@@ -75,7 +75,7 @@ public class PushedDeathListener extends DeathListener {
     public void onMove(PlayerMoveEvent event) {
         Player p = event.getPlayer();
         if (pushed.containsKey(p)) {
-            if ((p.getFallDistance() <= 0.5 || p.isOnGround())
+            if ((p.getFallDistance() == 0 || p.isOnGround())
                     && pushed.get(p).getWhen() + (p.getVelocity().length() < 0.05 ? 900 : 3000) < System.currentTimeMillis()) {
                 pushed.remove(p);
             }
