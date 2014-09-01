@@ -8,8 +8,6 @@ import me.libraryaddict.death.DeathCause;
 
 public class DeathCauseLightning extends DeathCause {
 
-  
-
     @Override
     public Entity getKiller(EntityDamageEvent event) {
         return null;

@@ -26,31 +26,6 @@ public class DeathHandler {
         deathCheck = newDeathCheck;
     }
 
-    static {
-        Plugin plugin = null;
-        for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
-            if (p.isEnabled()) {
-                plugin = p;
-                break;
-            }
-        }
-        final Plugin p = plugin;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
-            public void run() {
-                Bukkit.getPluginManager().registerEvents(listener, p);
-                PushedDeathListener listen = new PushedDeathListener();
-                registerListener(listen);
-                Bukkit.getPluginManager().registerEvents(listen, p);
-            }
-        });
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            public void run() {
-                listener.checkDamages();
-            }
-        }, 40, 40);
-        DeathListener.setListener(listener);
-    }
-
     /**
      * Get all the killers of this player, with the percentage of damage they are responsible for out of 1. 1 meaning they dealt
      * all the damage
@@ -163,6 +138,16 @@ public class DeathHandler {
     /**
      * Just a method that initializes static stuff
      */
-    public static void initialize() {
+    public static void initialize(Plugin plugin) {
+        Bukkit.getPluginManager().registerEvents(listener, plugin);
+        PushedDeathListener listen = new PushedDeathListener();
+        registerListener(listen);
+        Bukkit.getPluginManager().registerEvents(listen, plugin);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            public void run() {
+                listener.checkDamages();
+            }
+        }, 40, 40);
+        DeathListener.setListener(listener);
     }
 }
