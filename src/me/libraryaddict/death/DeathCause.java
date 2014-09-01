@@ -91,6 +91,10 @@ public abstract class DeathCause {
         deathCauses.add(DeathCause.UNKNOWN);
     }
 
+    public static ArrayList<DeathCause> getDeathCauses() {
+        return deathCauses;
+    }
+    
     public static void registerDeathCause(DeathCause cause) {
         registerDeathCause(cause, false);
     }
@@ -130,6 +134,10 @@ public abstract class DeathCause {
 
     public String getName() {
         return getClass().getSimpleName();
+    }
+    
+    public ArrayList<String> getDeathMessages() {
+        return deathMessages;
     }
 
     public String getDeathMessage() {
